@@ -50,29 +50,6 @@ feat.GetDataForPlayers = function(plys)
 	return table.concat( joined, "," )
 end
 
--- TTT2Pronouns.HookAdd( "player_connect_client", "PronounsGameEventPlayerConnectClient", function( data )
--- 	local name = data.name			// Same as Player:Nick()
-
--- 	// Player has connected; this happens instantly after they join -- do something..
--- 	local ply = Player( data.userid )
-
--- 	local plys = player.GetAll()
--- 	local data = sql.Query("SELECT * FROM ttt2_user_pronouns WHERE steamid64 IN (" .. feat.GetDataForPlayers(plys) .. ")")
-
--- 	for _, ply_data in pairs(data) do
-
--- 	end
-
--- 	net.Start( "PronounsPlayerPronouns" )
--- 	net.WriteUInt( #plys, 7 )
-
--- 	-- net.Send( Entity( 1 ) )
--- 	for _, oply in ipairs( plys ) do
--- 		net.WriteString( feat.OldNameFunc( plys ) )
--- 		net.WriteString(  )
--- 	end
--- end )
-
 TTT2Pronouns.HookAdd("PlayerSay", "player_pronouns", function(ply, txt)
 	local args = string.Split(txt, " ") or {txt}
 	if args[1] == "!pronouns" then
@@ -102,17 +79,11 @@ TTT2Pronouns.HookAdd("PronounsPatchCoreTTT2", "player_pronouns", function()
 end)
 
 TTT2Pronouns.HookAdd("PronounsCreateConVars", "player_pronouns", function()
-	TTT2Pronouns.MakeCVar("pronouns_auto_parse", "0")
 	TTT2Pronouns.MakeCVar("pronouns_wrap_player", "0")
 end)
 
 TTT2Pronouns.HookAdd("PronounsServerAddonSettings", "player_pronouns", function(parent, general)
-	TTT2Pronouns.MakeElement(general, "pronouns_auto_parse", "MakeCheckBox")
 	TTT2Pronouns.MakeElement(general, "pronouns_wrap_player", "MakeCheckBox")
 end)
-
-if SERVER then
-	TTT2Pronouns.HookAdd("PronounsSlowThink", "player_pronouns", feat.HurryUpTimeCheck)
-end
 
 TTT2Pronouns.AddFeature("PlayerPronouns", feat)
