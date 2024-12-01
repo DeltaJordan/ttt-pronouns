@@ -29,6 +29,11 @@ TTT2Pronouns.file_table = {
 
 TTT2Pronouns.file_times = {}
 
+TTT2Pronouns.SlowThink = function()
+	-- TTT2Pronouns.ScanChanges()
+	hook.Run("PronounsSlowThink")
+end
+
 TTT2Pronouns.ScanChanges = function()
 	for _, script in pairs(TTT2Pronouns.file_table) do
 		local path = "ttt2_pronouns/"
@@ -113,6 +118,10 @@ TTT2Pronouns.TTTBeginRound = function()
 	for _, ply in ipairs(alive) do
 		hook.Run("PronounsTTTBeginRoundLivingPlayer", ply, alive_count)
 	end
+
+	timer.Simple(1, function()
+		timer.Create("PronounsSlowThink", 1, 0, TTT2Pronouns.SlowThink)
+	end)
 end
 
 TTT2Pronouns.TTTEndRound = function()
@@ -123,6 +132,7 @@ TTT2Pronouns.TTTEndRound = function()
 	for _, ply in ipairs(alive) do
 		hook.Run("PronounsTTTEndRoundLivingPlayer", ply, alive_count)
 	end
+	timer.Remove("PronounsSlowThink")
 end
 
 TTT2Pronouns.HookAdd("PostInitPostEntity", "Init", TTT2Pronouns.Init)
