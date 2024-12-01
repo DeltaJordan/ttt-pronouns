@@ -76,7 +76,7 @@ end
 TTT2Pronouns.HookAdd("PlayerSay", "player_pronouns", function(ply, txt)
 	local args = string.Split(txt, " ") or {txt}
 	if args[1] == "!pronouns" then
-		local color_parts = string.Split(args[2], ",")
+		local color_parts = string.Split(args[3], ",")
 		local color = Color(color_parts[1], color_parts[2], color_parts[3], 255)
 		feat.UpdatePronouns(ply:SteamID64(), args[2], color)
 	end
