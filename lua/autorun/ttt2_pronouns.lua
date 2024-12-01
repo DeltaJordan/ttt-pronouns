@@ -1,5 +1,5 @@
-if TTT2PRONOUNS then TTT2PRONOUNS.is_reload = true end
-TTT2PRONOUNS = TTT2PRONOUNS or {
+if TTT2Pronouns then TTT2Pronouns.is_reload = true end
+TTT2Pronouns = TTT2Pronouns or {
 	is_reload = false,
 
 	CVARS = {},
@@ -18,7 +18,7 @@ local SCOPE_CLIENT = 1
 local SCOPE_SERVER = 2
 local SCOPE_SHARED = 3
 
-TTT2PRONOUNS.file_table = {
+TTT2Pronouns.file_table = {
 	{name = "sh_ttt2_pronouns.lua", scope = SCOPE_SHARED},
 
 	-- shared
@@ -27,10 +27,10 @@ TTT2PRONOUNS.file_table = {
 	-- client
 }
 
-TTT2PRONOUNS.file_times = {}
+TTT2Pronouns.file_times = {}
 
-TTT2PRONOUNS.ScanChanges = function()
-	for _, script in pairs(TTT2PRONOUNS.file_table) do
+TTT2Pronouns.ScanChanges = function()
+	for _, script in pairs(TTT2Pronouns.file_table) do
 		local path = "ttt2_pronouns/"
 
 		if script.scope == SCOPE_SHARED then
@@ -42,15 +42,15 @@ TTT2PRONOUNS.ScanChanges = function()
 		end
 
 		local new_time = file.Time(path, "LUA")
-		if TTT2PRONOUNS.file_times[path] ~= new_time then
-			-- print("ScanChanges: file", path, "was", TTT2PRONOUNS.file_times[path], "is now", new_time)
-			return TTT2PRONOUNS.LoadFiles()
+		if TTT2Pronouns.file_times[path] ~= new_time then
+			-- print("ScanChanges: file", path, "was", TTT2Pronouns.file_times[path], "is now", new_time)
+			return TTT2Pronouns.LoadFiles()
 		end
 	end
 end
 
-TTT2PRONOUNS.HookAdd = function(hook_name, hook_id, func)
-	local long_id = "TTT2PRONOUNS_" .. hook_name
+TTT2Pronouns.HookAdd = function(hook_name, hook_id, func)
+	local long_id = "TTT2Pronouns_" .. hook_name
 	if hook_id ~= nil and hook_id ~= "" and type(hook_id) ~= "table" then
 		long_id = long_id .. hook_id
 	end
@@ -58,8 +58,8 @@ TTT2PRONOUNS.HookAdd = function(hook_name, hook_id, func)
 	hook.Add(hook_name, long_id, func)
 end
 
-TTT2PRONOUNS.LoadFiles = function()
-	for _, script in ipairs(TTT2PRONOUNS.file_table) do
+TTT2Pronouns.LoadFiles = function()
+	for _, script in ipairs(TTT2Pronouns.file_table) do
 		local path = "ttt2_pronouns/"
 
 		if script.scope == SCOPE_SHARED then
@@ -78,35 +78,35 @@ TTT2PRONOUNS.LoadFiles = function()
 			include(path)
 		end
 
-		TTT2PRONOUNS.file_times[path] = file.Time(path, "LUA")
+		TTT2Pronouns.file_times[path] = file.Time(path, "LUA")
 	end
 end
 
-TTT2PRONOUNS.ClearRoundData = function()
-	TTT2PRONOUNS.RDATA = table.Copy(TTT2PRONOUNS.RoundDataProto)
+TTT2Pronouns.ClearRoundData = function()
+	TTT2Pronouns.RDATA = table.Copy(TTT2Pronouns.RoundDataProto)
 end
 
-TTT2PRONOUNS.TTTLanguageChanged = function()
+TTT2Pronouns.TTTLanguageChanged = function()
 	hook.Run("PronounsTTTLanguageChanged")
 end
 
--- TTT2PRONOUNS.GameEventListen = function()
+-- TTT2Pronouns.GameEventListen = function()
 -- 	gameevent.Listen( "player_connect_client" )
 -- end
 
-TTT2PRONOUNS.Init = function()
-	TTT2PRONOUNS.LoadFiles()
+TTT2Pronouns.Init = function()
+	TTT2Pronouns.LoadFiles()
 
 	hook.Run("PronounsCreateConVars")
 	hook.Run("PronounsPatchCoreTTT2")
 
-	TTT2PRONOUNS.TTTLanguageChanged()
+	TTT2Pronouns.TTTLanguageChanged()
 
-	-- TTT2PRONOUNS.GameEventListen()
+	-- TTT2Pronouns.GameEventListen()
 end
 
-TTT2PRONOUNS.TTTBeginRound = function()
-	TTT2PRONOUNS.ClearRoundData()
+TTT2Pronouns.TTTBeginRound = function()
+	TTT2Pronouns.ClearRoundData()
 	local alive = util.GetAlivePlayers()
 	local alive_count = #alive
 
@@ -115,12 +115,12 @@ TTT2PRONOUNS.TTTBeginRound = function()
 	end
 
 	timer.Simple(1, function()
-		timer.Create("PronounsSlowThink", 1, 0, TTT2PRONOUNS.SlowThink)
+		timer.Create("PronounsSlowThink", 1, 0, TTT2Pronouns.SlowThink)
 	end)
 end
 
-TTT2PRONOUNS.TTTEndRound = function()
-	TTT2PRONOUNS.ClearRoundData()
+TTT2Pronouns.TTTEndRound = function()
+	TTT2Pronouns.ClearRoundData()
 	local alive = util.GetAlivePlayers()
 	local alive_count = #alive
 
@@ -130,11 +130,11 @@ TTT2PRONOUNS.TTTEndRound = function()
 	timer.Remove("PronounsSlowThink")
 end
 
-TTT2PRONOUNS.HookAdd("PostInitPostEntity", "Init", TTT2PRONOUNS.Init)
-TTT2PRONOUNS.HookAdd("TTTBeginRound", "TTTBeginRound", TTT2PRONOUNS.TTTBeginRound)
-TTT2PRONOUNS.HookAdd("TTTEndRound", "TTTEndRound", TTT2PRONOUNS.TTTEndRound)
-TTT2PRONOUNS.HookAdd("TTTLanguageChanged", "TTTLanguageChanged", TTT2PRONOUNS.TTTLanguageChanged)
+TTT2Pronouns.HookAdd("PostInitPostEntity", "Init", TTT2Pronouns.Init)
+TTT2Pronouns.HookAdd("TTTBeginRound", "TTTBeginRound", TTT2Pronouns.TTTBeginRound)
+TTT2Pronouns.HookAdd("TTTEndRound", "TTTEndRound", TTT2Pronouns.TTTEndRound)
+TTT2Pronouns.HookAdd("TTTLanguageChanged", "TTTLanguageChanged", TTT2Pronouns.TTTLanguageChanged)
 
-if TTT2PRONOUNS.is_reload then
-	TTT2PRONOUNS.Init()
+if TTT2Pronouns.is_reload then
+	TTT2Pronouns.Init()
 end
